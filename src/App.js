@@ -7,6 +7,7 @@ import Rank from './Components/Rank/Rank';
 import ParticlesBg from 'particles-bg';
 import Clarifai from 'clarifai';
 import FaceRecognition from './Components/FaceRecognition/FaceRecognition';
+import Signin from './Components/Signin/Signin';
 window.process = {
   env: {
     NODE_ENV: 'development'
@@ -23,6 +24,7 @@ class App extends Component {
       input: '',
       imageUrl: '',
       box: {},
+      route: 'Signin'
     }
   }
   caculateFaceLocation = (data) => {
@@ -55,6 +57,10 @@ class App extends Component {
     .catch(err => console.log(err));
   };
 
+  onRouteChange = (route) => {
+    this.setState({route: route});
+  }
+
   render () {
     return (
       <div className="App">
@@ -62,11 +68,16 @@ class App extends Component {
         <div>...</div>
         <ParticlesBg type="cobweb" bg={true} />
         </>
-        <Navigation />
-        <Logo />
+        <Navigation onRouteChange={this.onRouteChange}/>
+        { this.state.route === 'Signin' 
+        ? <Signin onRouteChange={this.onRouteChange}/> 
+        : <div>
+        <Logo /> 
         <Rank />
         <ImageLinkForm onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit}/>
         <FaceRecognition  box={this.state.box} imageUrl={this.state.imageUrl}/>
+        </div>
+    }
       </div>
     );
   }
