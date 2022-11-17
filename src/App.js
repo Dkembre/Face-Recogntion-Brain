@@ -8,6 +8,7 @@ import ParticlesBg from 'particles-bg';
 import Clarifai from 'clarifai';
 import FaceRecognition from './Components/FaceRecognition/FaceRecognition';
 import Signin from './Components/Signin/Signin';
+import Register from './Components/Register/Register';
 window.process = {
   env: {
     NODE_ENV: 'development'
@@ -24,7 +25,8 @@ class App extends Component {
       input: '',
       imageUrl: '',
       box: {},
-      route: 'Signin'
+      route: 'Signin',
+      isSignedIn: false
     }
   }
   caculateFaceLocation = (data) => {
@@ -41,7 +43,6 @@ class App extends Component {
   }
 
   displayFaceBox = (box) => {
-    console.log(box);
     this.setState({box: box});
   }
 
@@ -58,25 +59,35 @@ class App extends Component {
   };
 
   onRouteChange = (route) => {
+    if(route === 'signout') {
+      this.setState({isSignedIn: false})
+    } else if (route === 'home') {
+      this.setState({isSignedIn: true})
+    }    
     this.setState({route: route});
   }
 
   render () {
+    const { isSignedIn, imageUrl, route, box } = this.state;
     return (
       <div className="App">
         <>
         <div>...</div>
         <ParticlesBg type="cobweb" bg={true} />
         </>
-        <Navigation onRouteChange={this.onRouteChange}/>
-        { this.state.route === 'Signin' 
-        ? <Signin onRouteChange={this.onRouteChange}/> 
-        : <div>
+        <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange}/>
+        {route === 'home' 
+        ? <div>
         <Logo /> 
         <Rank />
         <ImageLinkForm onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit}/>
-        <FaceRecognition  box={this.state.box} imageUrl={this.state.imageUrl}/>
+        <FaceRecognition  box={box} imageUrl={imageUrl}/>
         </div>
+        : (
+          this.state.route === 'Signin' ?
+          <Signin onRouteChange={this.onRouteChange}/>
+          : <Register onRouteChange={this.onRouteChange} />
+        ) 
     }
       </div>
     );
