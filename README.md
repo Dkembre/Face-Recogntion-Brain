@@ -1,3 +1,9 @@
+Zero-to-Mastery's Final project from the Complete Web Developer's course.
+
+It is a face recognition app where you Register, input a photo, it will select the face in the photo and keep track of how many times you do this.
+
+This app was created with HTML, CSS, Tachyon, Javascript, React.js using Create React App, Node.js to create the server and API, and PostgreSQL to create the Database.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
