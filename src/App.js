@@ -18,23 +18,26 @@ window.process = {
 const app = new Clarifai.App({
   apiKey: '7993c2cb92854b2080a4ac1317ab4bbd'
 });
+
+const initialState = {
+    input: '',
+    imageUrl: '',
+    box: {},
+    route: 'signin',
+    isSignedIn: false,
+    user: {
+      id: '',
+      name: '',
+      entries: 0,
+      email: '',
+      joined:'' 
+    }
+}
+
 class App extends Component {
   constructor(){
     super();
-    this.state = {
-      input: '',
-      imageUrl: '',
-      box: {},
-      route: 'Signin',
-      isSignedIn: false,
-      user: {
-        id: '',
-        name: '',
-        entries: 0,
-        email: '',
-        joined:'' 
-      }
-    }
+    this.state = initialState; 
   }
 
   loadUser = (data) => {
@@ -88,6 +91,7 @@ class App extends Component {
     .then(count => {
       this.setState(Object.assign(this.state.user, {entries: count}))
     })
+    .catch(console.log)
   }
       this.displayFaceBox(this.caculateFaceLocation(response))
   }) 
@@ -96,7 +100,7 @@ class App extends Component {
 
   onRouteChange = (route) => {
     if(route === 'signout') {
-      this.setState({isSignedIn: false})
+      this.setState(initialState)
     } else if (route === 'home') {
       this.setState({isSignedIn: true})
     }    
@@ -112,7 +116,7 @@ class App extends Component {
         <ParticlesBg type="cobweb" bg={true} />
         </>
         <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange}/>
-        {route === 'home' 
+        { route === 'home' 
         ? <div>
         <Logo /> 
         <Rank name={this.state.user.name} entries={this.state.user.entries} />
@@ -120,8 +124,8 @@ class App extends Component {
         <FaceRecognition  box={box} imageUrl={imageUrl}/>
         </div>
         : (
-          this.state.route === 'Signin' ?
-          <Signin loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
+          this.state.route === 'signin' 
+          ? <Signin loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
           : <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
         ) 
     }
