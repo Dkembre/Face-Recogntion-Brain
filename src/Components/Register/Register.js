@@ -21,8 +21,8 @@ class Register extends React.Component  {
     onNameChange = (event) => {
         this.setState({name: event.target.value})
     }
-    onSubmitSignin = (event) => {
-        fetch('http://localhost:3001/register', {
+    onSubmitSignin = () => {
+        fetch('https://face-recognition-brain-api.up.railway.app/register', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
